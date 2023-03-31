@@ -1,0 +1,109 @@
+:root {
+    --building-block-height: 40px;
+    --building-block-width: 40px;
+
+  }
+
+
+
+
+
+body {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0;
+    font-family: Sans-serif;
+}
+
+/*central part of the game including name, individual boards, ship dock, flip button*/
+.main-board {
+    background-color: #44CFDB;
+    width: 1000px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.name {
+    font-size: 50px;
+    margin: 30px;
+}
+
+.game-boards {
+    display: flex;
+}
+
+/* individual boards */
+.players-board, .computers-board {
+    background-color: #89DAE1;
+    width: 400px;
+    height: 400px;
+    margin: 30px;
+    border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.players-board > div, .computers-board > div {
+    width: var( --building-block-height);
+    height: var( --building-block-height);
+    border: 1px solid lightslategray;
+    box-sizing: border-box;
+}
+
+
+/* ship dock and ships */
+.ship-dock {
+    background-color: #38595C;
+    width: 600px;
+    height: 100px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items:center
+}
+
+.ship-dock > div {
+    height: 40px;
+    background-color: gray;
+    margin: 5px;
+}
+
+.carrier {
+    width: 200px; 
+}
+
+.battleship {
+    width: 160px;
+}
+.cruiser {
+    width: 120px;
+}
+
+.submarine {
+    width: 80px;
+}
+
+.destroyer {
+    width: 40px;
+}
+
+
+
+
+
+
+
+
+
+
+
+.players-info, .computers-info{
+    background-color: aqua;
+    height: 100vh;
+    width: 220px;
+
+}
