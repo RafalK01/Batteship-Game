@@ -58,7 +58,7 @@ body {
 /* ship dock and ships */
 .ship-dock {
     background-color: #38595C;
-    width: 600px;
+    width: 800px;
     height: 100px;
     display: flex;
     flex-wrap: wrap;
@@ -68,27 +68,35 @@ body {
 
 .ship-dock > div {
     height: 40px;
-    background-color: gray;
+    /* background-color: gray; */
     margin: 5px;
 }
 
 .carrier {
     width: 200px; 
+    background-color: pink
 }
 
 .battleship {
     width: 160px;
+    background-color: yellow
+
 }
 .cruiser {
     width: 120px;
+    background-color: orange
+
 }
 
 .submarine {
     width: 80px;
+    background-color: lightsalmon
+
 }
 
 .destroyer {
     width: 40px;
+    background-color: azure;
 }
 
 
