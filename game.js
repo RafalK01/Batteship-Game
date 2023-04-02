@@ -6,24 +6,20 @@ const allShips = document.querySelectorAll(".ship-dock > div")
 
 // puts 100 game fielsd into each board
 for (let i = 1; i <= 100; i++) {
-    playersBoard.innerHTML += `<div id=${i} class=""></div>`
-    computersBoard.innerHTML += `<div id=${i} class=""></div>`
+    playersBoard.innerHTML += `<div id=${i}></div>`
+    computersBoard.innerHTML += `<div id=${i}></div>`
 }
 
 // flip ships in the doc function
-flipButton.addEventListener("click", click => {
-    flipShip()
-})
 
-allShips.forEach(ship => {
-    ship.style.transform = "none"
-})
-
+let shipAngle  = 0
 function flipShip() {
+    shipAngle = shipAngle === 0 ? 90 : 0
     allShips.forEach(ship => {
-        ship.style.transform === "none" ? ship.style.transform = "rotate(90deg)" : ship.style.transform = "none"
+         ship.style.transform = `rotate(${shipAngle}deg)`
     })
 }
+flipButton.addEventListener("click", flipShip)
 
 //CREATE A SHIP FOR COMPUTER
 class Ship {
@@ -39,34 +35,39 @@ const submarine = new Ship("submarine", 3)
 const destroyer = new Ship("destroyer", 2)
 
 const shipsArray = [carrier, battleship, cruiser, submarine, destroyer]
+let notPlaced
 
-// COPMUTER PLACE SHIPS RANDOMLY
-function computerPlaceShip(ship) {
-    const computersBoardBlocks = document.querySelectorAll(".computers-board div");
+// COPMUTER PLACE SHIPS RANDOMLY / PLAYER DROPS SHIPS
+function placeShip(user, ship, startId) {
+    const boardBlocks = document.querySelectorAll(`.${user}s-board div`);
     const randomBoolean = Math.random() < 0.5;
-    const isHorizontal = randomBoolean;
+    const isHorizontal = user === "player" ? shipAngle === 0 : randomBoolean;
     let randomStartIndex = Math.floor(Math.random() * 100);
-  
+
+    let startIndex = startId ? startId : randomStartIndex
+
     let goodStartIndex;
     if (isHorizontal) {
       // Calculate goodStartIndex for horizontal placement
-      goodStartIndex = randomStartIndex <= 100 - ship.length ? randomStartIndex : 100 - ship.length;
+      goodStartIndex = startIndex <= 100 - ship.length ? startIndex : 100 - ship.length;
     } else {
       // Calculate goodStartIndex for vertical placement
-      goodStartIndex = randomStartIndex <= 100 - 10 * ship.length ? randomStartIndex : randomStartIndex % 10;
+      goodStartIndex = startIndex <= 100 - 10 * ship.length ? startIndex : startIndex % 10;
     }
   
     // create array of board blocks busy with computer's ships
     const shipBlocks = [];
     for (let i = 0; i < ship.length; i++) {
       if (isHorizontal) {
-        shipBlocks.push(computersBoardBlocks[Number(goodStartIndex) + i]);
+        shipBlocks.push(boardBlocks[Number(goodStartIndex) + i]);
       } else {
-        shipBlocks.push(computersBoardBlocks[Number(goodStartIndex) + i * 10]);
+        shipBlocks.push(boardBlocks[Number(goodStartIndex) + i * 10]);
       }
     }
+    console.log(shipBlocks)
+
   
-    // prevent overflowing of computer's ships  
+    // prevent overflowing of ships  
     let noOverflow = true;
     if (isHorizontal) {
       noOverflow = shipBlocks.every((_shipBlock, index) => {
@@ -83,26 +84,51 @@ function computerPlaceShip(ship) {
     // prevent stacking ships on top of each other
     const notBusy = shipBlocks.every(shipBlock => !shipBlock.classList.contains("busy"));
   
-    // computer place random ships if no overflow
+    // assign classes to board blocks if no overflow and not busy
     if (noOverflow && notBusy) {
       shipBlocks.forEach(shipBlock => {
         shipBlock.classList.add(ship.name);
         shipBlock.classList.add("busy");
       });
     } else {
-      computerPlaceShip(ship);
+        if (user === "computer") placeShip(user, ship, startId)
+        if (user === "player") notPlaced = true
     }
 }
   
 // COPMUTER PLACE EACHE SHIP ON THE BOARD
-shipsArray.forEach(ship => {
-computerPlaceShip(ship) 
-})
+shipsArray.forEach(ship => placeShip("computer", ship))
 
+// DRAG PLAYERS SHIPS
+let draggedPlayersShip;
+const playersShipsArray = Array.from(allShips);
 
+// add event listener for each ship
+playersShipsArray.forEach(optionShip => optionShip.addEventListener("dragstart", dragStart));
 
+const playersBoardElements = document.querySelectorAll(".players-board > div");
 
+playersBoardElements.forEach(boardBlock => {
+  boardBlock.addEventListener("dragover", dragOver);
+  boardBlock.addEventListener("drop", droppShip);
+});
 
+function dragStart(event){
+  notPlaced = false;
+  draggedPlayersShip = event.target;
+}
 
+function dragOver(event){
+  event.preventDefault();
+}
+
+function droppShip(event){
+    const dropStartId = event.target.id
+    const ship = shipsArray[draggedPlayersShip.id]
+    placeShip("player", ship, dropStartId)
+    if (!notPlaced){
+      draggedPlayersShip.remove()
+    }
+  }
 
 
