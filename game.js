@@ -37,14 +37,7 @@ const destroyer = new Ship("destroyer", 2)
 const shipsArray = [carrier, battleship, cruiser, submarine, destroyer]
 let notPlaced
 
-// COPMUTER PLACE SHIPS RANDOMLY / PLAYER DROPS SHIPS
-function placeShip(user, ship, startId) {
-    const boardBlocks = document.querySelectorAll(`.${user}s-board div`);
-    const randomBoolean = Math.random() < 0.5;
-    const isHorizontal = user === "player" ? shipAngle === 0 : randomBoolean;
-    let randomStartIndex = Math.floor(Math.random() * 100);
-
-    let startIndex = startId ? startId : randomStartIndex
+function getValidity(boardBlocks, isHorizontal, startIndex, ship) {
 
     let goodStartIndex;
     if (isHorizontal) {
@@ -84,6 +77,20 @@ function placeShip(user, ship, startId) {
     // prevent stacking ships on top of each other
     const notBusy = shipBlocks.every(shipBlock => !shipBlock.classList.contains("busy"));
   
+    return {shipBlocks, noOverflow, notBusy}
+}
+
+
+// COPMUTER PLACE SHIPS RANDOMLY / PLAYER DROPS SHIPS
+function placeShip(user, ship, startId) {
+    const boardBlocks = document.querySelectorAll(`.${user}s-board div`);
+    const randomBoolean = Math.random() < 0.5;
+    const isHorizontal = user === "player" ? shipAngle === 0 : randomBoolean;
+    let randomStartIndex = Math.floor(Math.random() * 100);
+
+    let startIndex = startId ? startId : randomStartIndex
+
+    const { shipBlocks, noOverflow, notBusy } = getValidity(boardBlocks, isHorizontal, startIndex, ship)
     // assign classes to board blocks if no overflow and not busy
     if (noOverflow && notBusy) {
       shipBlocks.forEach(shipBlock => {

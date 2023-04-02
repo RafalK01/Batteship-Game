@@ -73,29 +73,29 @@ body {
 }
 
 .carrier {
-    width: 200px; 
+    width: 240px; 
     background-color: pink
 }
 
 .battleship {
-    width: 160px;
+    width: 200px;
     background-color: yellow
 
 }
 .cruiser {
-    width: 120px;
+    width: 180px;
     background-color: orange
 
 }
 
 .submarine {
-    width: 80px;
+    width: 120px;
     background-color: lightsalmon
 
 }
 
 .destroyer {
-    width: 40px;
+    width: 80px;
     background-color: azure;
 }
 
