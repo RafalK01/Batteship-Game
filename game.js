@@ -203,6 +203,7 @@ function playerGuess(event){
 function computerGuess(){
     if(!gameOver){
         setTimeout(()=> {
+            // If the random position was hit before compuer tries another random position
             let guess = Math.floor(Math.random() * 100)
             const allPlayersBlocks = document.querySelectorAll(".players-board div")
             if (allPlayersBlocks[guess].classList.contains("busy") &&
@@ -210,14 +211,38 @@ function computerGuess(){
                 computerGuess()
                 return
             }
+            // handle computer hitting players ship, ship gets added to computerHits array
             else if (allPlayersBlocks[guess].classList.contains("busy") && 
             !allPlayersBlocks[guess].classList.contains("hit")) {
                 allPlayersBlocks[guess].classList.add("hit")
-                gameInfo.innerText = "Computer hit your ship!"
-            }
+                gameInfo.innerText = "Computer hit your ship, sad times..."
+                let hitShipsClasses = Array.from(event.target.classList)
+                hitShipsClasses = hitShipsClasses.filter(className => className !== "busy")
+                hitShipsClasses = hitShipsClasses.filter(className => className !== "hit")
+                computerHits.push(...hitShipsClasses)
 
+            } 
+            // if computer misses
+            else {
+                gameInfo.innerText = "Computer missed, lucky you!"
+                allPlayersBlocks[guess].classList.add("empty")
+            }
         },2000)
 
+        //let player know its their turn
+        setTimeout(()=> {
+            gameInfo.innerText = "Your turn!"
+        }, 4000)
+
+        // add event listener to computers board and player can guess again
+        setTimeout(() => {
+            playersGo = true
+            //gameInfo.innerText = "Your turn!"
+            const computersBoardBlocks = document.querySelectorAll(".computers-board div")
+            computersBoardBlocks.forEach(block => {
+            block.addEventListener("click", playerGuess, true)
+            })
+        })
     }
 }
 
