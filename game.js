@@ -212,17 +212,77 @@ function playerGuess(event){
         },1000)
     }
     }
-
-    console.log(gameOver)
     
 }
+
+ // decide on next move based on previously hit
+//strategic logic
+let hitInLastMove
+let guess
+let lastGuess
+
+// creates an array of future guesses when one ship is hit
+function nextStrategicMove(lastSuccesfullGuess){
+    const allPlayersBlocks = document.querySelectorAll(".players-board div")
+    let nextStrategicSteps = []
+    console.log(lastSuccesfullGuess)
+
+    if( 
+        !allPlayersBlocks[lastSuccesfullGuess + 1].classList.contains("empty") && !allPlayersBlocks[lastSuccesfullGuess + 1].classList.contains("hit")
+          ){
+            nextStrategicSteps.push(lastSuccesfullGuess + 1)
+    }
+    if( 
+        (lastSuccesfullGuess - 1) > 0 && !allPlayersBlocks[lastSuccesfullGuess - 1].classList.contains("empty") && !allPlayersBlocks[lastSuccesfullGuess - 1].classList.contains("hit")
+          ){
+            nextStrategicSteps.push(lastSuccesfullGuess - 1)
+    }
+    if( 
+        !allPlayersBlocks[lastSuccesfullGuess + 10].classList.contains("empty") && !allPlayersBlocks[lastSuccesfullGuess + 10].classList.contains("hit")
+          ){
+            nextStrategicSteps.push(lastSuccesfullGuess + 10)
+    }
+    if( 
+        (lastSuccesfullGuess - 1) > 0 && !allPlayersBlocks[lastSuccesfullGuess - 10].classList.contains("empty") && !allPlayersBlocks[lastSuccesfullGuess - 10].classList.contains("hit")
+          ){
+            nextStrategicSteps.push(lastSuccesfullGuess - 10)
+    }
+    return nextStrategicSteps
+
+}
+//
+
+
 // computer guesses players ship position
 function computerGuess(){
     if(!gameOver){
+
+        //IT GIVES AN ARRAY OF FUTURE GUESSES
+        if(hitInLastMove && lastGuess !== undefined){
+            console.log(nextStrategicMove(lastGuess))
+            console.log("Last guess: ", lastGuess)
+            console.log("Guess: ", guess)
+        }
+    
+
         setTimeout(()=> {
             // If the random position was hit before compuer tries another random position
-            let guess = Math.floor(Math.random() * 100)
+            //strategic logic
+            // console.log(lastGuess)
+            // if (hitInLastMove === false){
+            //     guess = Math.floor(Math.random() * 100)
+            // }
+            // if (hitInLastMove === true) {
+            //     guess = lastGuess + 1
+            // }
+            //
+            //initial guess
+            guess = Math.floor(Math.random() * 100)
+            console.log(guess)
+
+
             const allPlayersBlocks = document.querySelectorAll(".players-board div")
+            console.log(allPlayersBlocks[0])
             if (allPlayersBlocks[guess].classList.contains("empty") ||
                 allPlayersBlocks[guess].classList.contains("hit")){
                 computerGuess()
@@ -237,6 +297,12 @@ function computerGuess(){
                 hitShipsClasses = hitShipsClasses.filter(className => className !== "busy")
                 hitShipsClasses = hitShipsClasses.filter(className => className !== "hit")
                 computerHits.push(...hitShipsClasses)
+
+                //strategic logic
+                hitInLastMove = true
+                lastGuess = guess
+
+
                 //check score
                 checkHits("computer", computerHits, computerSunkShips)
 
@@ -245,18 +311,17 @@ function computerGuess(){
             else {
                 gameInfo.innerText = "Computer missed, lucky you!"
                 allPlayersBlocks[guess].classList.add("empty")
+
+                //strategic logic
+                hitInLastMove = false
+                  
             }
         },1000)
-
-        
+   
         //let player know its their turn
-
-
-
         setTimeout(()=> {
             gameInfo.innerText = "Your turn!"
         }, 3000)
-
 
         // add event listener to computers board and player can guess again
              setTimeout(() => {
@@ -289,12 +354,14 @@ function checkHits(user, userHits, userSunkShips) {
             }
             
     }
+    // check If any of the ships was already hit
     checkShip("carrier", 6)
     checkShip("battleship", 5)
     checkShip("cruiser", 4)
     checkShip("submarine", 3)
     checkShip("destroyer", 2)
 
+    //loosing/winning logic
     if (computerSunkShips.length === 5){
         gameInfo.innerText = "All of your ships were sunk! You lost!"
         gameOver = true
