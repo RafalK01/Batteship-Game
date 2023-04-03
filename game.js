@@ -81,6 +81,9 @@ function getValidity(boardBlocks, isHorizontal, startIndex, ship) {
     return {shipBlocks, noOverflow, notBusy}
 }
 
+// is it players turn
+let playersGo 
+
 
 // COPMUTER PLACE SHIPS RANDOMLY / PLAYER DROPS SHIPS
 function placeShip(user, ship, startId) {
@@ -102,6 +105,7 @@ function placeShip(user, ship, startId) {
         if (user === "computer") placeShip(user, ship, startId)
         if (user === "player") notPlaced = true
     }
+    playersGo = true
 }
   
 // COPMUTER PLACE EACHE SHIP ON THE BOARD
@@ -146,7 +150,7 @@ function droppShip(event){
 
 //LOGIC
   let gameOver = false
-  let playersGo 
+ 
 
 
  // start button event listener
@@ -170,6 +174,11 @@ function startGame(){
 let playerHits = []
 let computerHits = []
 
+// ships sunk by player (of computer)
+const playerSunkShips = []
+// ships sunk by computer (of player)
+const computerSunkShips = []
+
 
 // player can click on computers board and guess where the ships are
 function playerGuess(event){
@@ -182,7 +191,12 @@ function playerGuess(event){
             hitShipsClasses = hitShipsClasses.filter(className => className !== "busy")
             hitShipsClasses = hitShipsClasses.filter(className => className !== "hit")
             playerHits.push(...hitShipsClasses)
+            //check score
+            checkHits("player", playerHits, playerSunkShips)
         }
+
+        if(!gameOver) { 
+        
         //player missed the ship
         if(!event.target.classList.contains("busy")) {
             gameInfo.innerText = "You missed!"
@@ -195,9 +209,12 @@ function playerGuess(event){
         setTimeout(()=>{
             gameInfo.innerText = "It's computers go!"
             computerGuess()
-        },2000)
-        
+        },1000)
     }
+    }
+
+    console.log(gameOver)
+    
 }
 // computer guesses players ship position
 function computerGuess(){
@@ -206,7 +223,7 @@ function computerGuess(){
             // If the random position was hit before compuer tries another random position
             let guess = Math.floor(Math.random() * 100)
             const allPlayersBlocks = document.querySelectorAll(".players-board div")
-            if (allPlayersBlocks[guess].classList.contains("busy") &&
+            if (allPlayersBlocks[guess].classList.contains("empty") ||
                 allPlayersBlocks[guess].classList.contains("hit")){
                 computerGuess()
                 return
@@ -216,10 +233,12 @@ function computerGuess(){
             !allPlayersBlocks[guess].classList.contains("hit")) {
                 allPlayersBlocks[guess].classList.add("hit")
                 gameInfo.innerText = "Computer hit your ship, sad times..."
-                let hitShipsClasses = Array.from(event.target.classList)
+                let hitShipsClasses = Array.from(allPlayersBlocks[guess].classList)
                 hitShipsClasses = hitShipsClasses.filter(className => className !== "busy")
                 hitShipsClasses = hitShipsClasses.filter(className => className !== "hit")
                 computerHits.push(...hitShipsClasses)
+                //check score
+                checkHits("computer", computerHits, computerSunkShips)
 
             } 
             // if computer misses
@@ -227,24 +246,67 @@ function computerGuess(){
                 gameInfo.innerText = "Computer missed, lucky you!"
                 allPlayersBlocks[guess].classList.add("empty")
             }
-        },2000)
+        },1000)
 
+        
         //let player know its their turn
+
+
+
         setTimeout(()=> {
             gameInfo.innerText = "Your turn!"
-        }, 4000)
+        }, 3000)
+
 
         // add event listener to computers board and player can guess again
-        setTimeout(() => {
-            playersGo = true
-            //gameInfo.innerText = "Your turn!"
-            const computersBoardBlocks = document.querySelectorAll(".computers-board div")
-            computersBoardBlocks.forEach(block => {
-            block.addEventListener("click", playerGuess, true)
-            })
+             setTimeout(() => {
+                 playersGo = true
+                 //gameInfo.innerText = "Your turn!"
+                 const computersBoardBlocks = document.querySelectorAll(".computers-board div")
+                 computersBoardBlocks.forEach(block => {
+                 block.addEventListener("click", playerGuess, true)
+                 })
         })
+        
     }
 }
+
+// check what was hit playerHits/ computerHits arrays, elements are removed and stored in userSunkShips
+function checkHits(user, userHits, userSunkShips) {
+
+    //if all element of a ship are in 
+    function checkShip(shipName, shipLength){
+        if (userHits.filter(storedShipName =>
+            storedShipName === shipName).length === shipLength){
+                gameInfo.innerText = `${shipName} was sunk!`
+                if (user === "player"){
+                    playerHits = userHits.filter(storedShipName => storedShipName !==shipName)
+                }
+                if (user === "computer"){
+                    computerHits = userHits.filter(storedShipName => storedShipName !==shipName)
+                }
+                userSunkShips.push(shipName)
+            }
+            
+    }
+    checkShip("carrier", 6)
+    checkShip("battleship", 5)
+    checkShip("cruiser", 4)
+    checkShip("submarine", 3)
+    checkShip("destroyer", 2)
+
+    if (computerSunkShips.length === 5){
+        gameInfo.innerText = "All of your ships were sunk! You lost!"
+        gameOver = true
+    }
+    if (playerSunkShips.length === 5){
+        gameInfo.innerText = "All computer ships sunk! You are the winner!"
+        gameOver = true
+    }
+
+}
+
+
 
 
 
