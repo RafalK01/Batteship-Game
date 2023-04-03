@@ -3,6 +3,9 @@ const playersBoard = document.querySelector(".players-board")
 const computersBoard = document.querySelector(".computers-board")
 const flipButton = document.querySelector(".flip-button")
 const allShips = document.querySelectorAll(".ship-dock > div")
+const dock = document.querySelector(".ship-dock")
+const gameInfo = document.querySelector(".game-info")
+
 
 // puts 100 game fielsd into each board
 for (let i = 1; i <= 100; i++) {
@@ -11,7 +14,6 @@ for (let i = 1; i <= 100; i++) {
 }
 
 // flip ships in the doc function
-
 let shipAngle  = 0
 function flipShip() {
     shipAngle = shipAngle === 0 ? 90 : 0
@@ -57,7 +59,6 @@ function getValidity(boardBlocks, isHorizontal, startIndex, ship) {
         shipBlocks.push(boardBlocks[Number(goodStartIndex) + i * 10]);
       }
     }
-    console.log(shipBlocks)
 
   
     // prevent overflowing of ships  
@@ -109,6 +110,7 @@ shipsArray.forEach(ship => placeShip("computer", ship))
 // DRAG PLAYERS SHIPS
 let draggedPlayersShip;
 const playersShipsArray = Array.from(allShips);
+let shipsPlacedByPlayer =[]
 
 // add event listener for each ship
 playersShipsArray.forEach(optionShip => optionShip.addEventListener("dragstart", dragStart));
@@ -134,8 +136,98 @@ function droppShip(event){
     const ship = shipsArray[draggedPlayersShip.id]
     placeShip("player", ship, dropStartId)
     if (!notPlaced){
+      shipsPlacedByPlayer.push(draggedPlayersShip)
       draggedPlayersShip.remove()
+
     }
   }
+
+
+
+//LOGIC
+  let gameOver = false
+  let playersGo 
+
+
+ // start button event listener
+const startButton = document.querySelector(".start-button")
+startButton.addEventListener("click", click => startGame())
+ 
+//start the game if users ships are placed
+function startGame(){
+    if(shipsPlacedByPlayer.length !== 5){
+    gameInfo.innerText = "Place all of your ships first!"
+} else {
+    const computersBoardBlocks = document.querySelectorAll(".computers-board div")
+    computersBoardBlocks.forEach(block => {
+        block.addEventListener("click", playerGuess, true)
+    })
+    gameInfo.innerText = "Guess computers ships positions!"
+}
+}
+
+//store hit elements by each
+let playerHits = []
+let computerHits = []
+
+
+// player can click on computers board and guess where the ships are
+function playerGuess(event){
+    if(!gameOver) {
+        //hit is successful
+        if(event.target.classList.contains("busy")){
+            event.target.classList.add("hit")
+            gameInfo.innerText = "You hit computers ship!"
+            let hitShipsClasses = Array.from(event.target.classList)
+            hitShipsClasses = hitShipsClasses.filter(className => className !== "busy")
+            hitShipsClasses = hitShipsClasses.filter(className => className !== "hit")
+            playerHits.push(...hitShipsClasses)
+        }
+        //player missed the ship
+        if(!event.target.classList.contains("busy")) {
+            gameInfo.innerText = "You missed!"
+            event.target.classList.add("empty")
+        }
+        playersGo = false
+        // remove the event listener from computers board as it"s computers turn now
+        const computersBoardBlocks = document.querySelectorAll(".computers-board div")
+        computersBoardBlocks.forEach(block => block.removeEventListener("click", playerGuess, true))
+        setTimeout(()=>{
+            gameInfo.innerText = "It's computers go!"
+            computerGuess()
+        },2000)
+        
+    }
+}
+// computer guesses players ship position
+function computerGuess(){
+    if(!gameOver){
+        setTimeout(()=> {
+            let guess = Math.floor(Math.random() * 100)
+            const allPlayersBlocks = document.querySelectorAll(".players-board div")
+            if (allPlayersBlocks[guess].classList.contains("busy") &&
+                allPlayersBlocks[guess].classList.contains("hit")){
+                computerGuess()
+                return
+            }
+            else if (allPlayersBlocks[guess].classList.contains("busy") && 
+            !allPlayersBlocks[guess].classList.contains("hit")) {
+                allPlayersBlocks[guess].classList.add("hit")
+                gameInfo.innerText = "Computer hit your ship!"
+            }
+
+        },2000)
+
+    }
+}
+
+
+
+
+
+
+
+  
+
 
 
