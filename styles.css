@@ -115,9 +115,20 @@ body {
     width: 220px;
 }
 
+/* .computers-board .carrier,
+.computers-board .battleship,
+.computers-board .cruiser,
+.computers-board .submarine,
+.computers-board .destroyer { 
+    background-color: #89DAE1;
+} */
+
+
+
+
 .hit {
-    background-color: red;
+    background-color: red !important;
 }
 .empty {
-    background-color: gray;
+    background-color: gray !important;
 }
