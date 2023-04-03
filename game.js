@@ -214,80 +214,80 @@ function playerGuess(event){
     }
     
 }
-
+//------------------------------------------------------------------------------------------------------------------------------
  // decide on next move based on previously hit
 //strategic logic
 let hitInLastMove
 let guess
 let lastGuess
+console.log(lastGuess)
+
 
 // creates an array of future guesses when one ship is hit
 function nextStrategicMove(lastSuccesfullGuess){
     const allPlayersBlocks = document.querySelectorAll(".players-board div")
     let nextStrategicSteps = []
-    console.log(lastSuccesfullGuess)
 
     if( 
-        !allPlayersBlocks[lastSuccesfullGuess + 1].classList.contains("empty") && !allPlayersBlocks[lastSuccesfullGuess + 1].classList.contains("hit")
+        !allPlayersBlocks[lastSuccesfullGuess + 1].classList.contains("empty") &&
+         !allPlayersBlocks[lastSuccesfullGuess + 1].classList.contains("hit")
           ){
             nextStrategicSteps.push(lastSuccesfullGuess + 1)
     }
     if( 
-        (lastSuccesfullGuess - 1) > 0 && !allPlayersBlocks[lastSuccesfullGuess - 1].classList.contains("empty") && !allPlayersBlocks[lastSuccesfullGuess - 1].classList.contains("hit")
+        (lastSuccesfullGuess - 1) > 0 && !allPlayersBlocks[lastSuccesfullGuess - 1].classList.contains("empty") &&
+         !allPlayersBlocks[lastSuccesfullGuess - 1].classList.contains("hit")
           ){
             nextStrategicSteps.push(lastSuccesfullGuess - 1)
     }
     if( 
-        !allPlayersBlocks[lastSuccesfullGuess + 10].classList.contains("empty") && !allPlayersBlocks[lastSuccesfullGuess + 10].classList.contains("hit")
+        !allPlayersBlocks[lastSuccesfullGuess + 10].classList.contains("empty") &&
+         !allPlayersBlocks[lastSuccesfullGuess + 10].classList.contains("hit")
           ){
             nextStrategicSteps.push(lastSuccesfullGuess + 10)
     }
     if( 
-        (lastSuccesfullGuess - 1) > 0 && !allPlayersBlocks[lastSuccesfullGuess - 10].classList.contains("empty") && !allPlayersBlocks[lastSuccesfullGuess - 10].classList.contains("hit")
+        (lastSuccesfullGuess - 1) > 0 && !allPlayersBlocks[lastSuccesfullGuess - 10].classList.contains("empty") &&
+         !allPlayersBlocks[lastSuccesfullGuess - 10].classList.contains("hit")
           ){
             nextStrategicSteps.push(lastSuccesfullGuess - 10)
     }
     return nextStrategicSteps
 
 }
+
+function getStrategicGuess(lastGuessID){
+    console.log(lastGuessID)
+    nextStrategicStepsArray = nextStrategicMove(lastGuessID)
+    console.log(nextStrategicStepsArray)
+    return nextStrategicStepsArray[0]
+}
 //
 
 
+//------------------------------------------------------------------------------------------------------------------------------
 // computer guesses players ship position
 function computerGuess(){
     if(!gameOver){
-
-        //IT GIVES AN ARRAY OF FUTURE GUESSES
-        if(hitInLastMove && lastGuess !== undefined){
-            console.log(nextStrategicMove(lastGuess))
-            console.log("Last guess: ", lastGuess)
-            console.log("Guess: ", guess)
-        }
     
-
         setTimeout(()=> {
-            // If the random position was hit before compuer tries another random position
-            //strategic logic
-            // console.log(lastGuess)
-            // if (hitInLastMove === false){
-            //     guess = Math.floor(Math.random() * 100)
-            // }
-            // if (hitInLastMove === true) {
-            //     guess = lastGuess + 1
-            // }
-            //
-            //initial guess
-            guess = Math.floor(Math.random() * 100)
-            console.log(guess)
+
+            let guess
+            if (hitInLastMove === false || lastGuess === undefined) {
+                guess = Math.floor(Math.random() * 100)
+            } 
+            if (hitInLastMove === true && lastGuess !== undefined){
+                guess = getStrategicGuess(lastGuess)
+            }
 
 
             const allPlayersBlocks = document.querySelectorAll(".players-board div")
-            console.log(allPlayersBlocks[0])
             if (allPlayersBlocks[guess].classList.contains("empty") ||
                 allPlayersBlocks[guess].classList.contains("hit")){
                 computerGuess()
                 return
             }
+
             // handle computer hitting players ship, ship gets added to computerHits array
             else if (allPlayersBlocks[guess].classList.contains("busy") && 
             !allPlayersBlocks[guess].classList.contains("hit")) {
