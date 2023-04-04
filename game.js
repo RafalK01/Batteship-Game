@@ -160,13 +160,13 @@ startButton.addEventListener("click", click => startGame())
 //start the game if users ships are placed
 function startGame(){
     if(shipsPlacedByPlayer.length !== 5){
-    gameInfo.innerText = "Place all of your ships first!"
+    gameInfo.innerText = "Place all of your ships on the left board first!"
 } else {
     const computersBoardBlocks = document.querySelectorAll(".computers-board div")
     computersBoardBlocks.forEach(block => {
         block.addEventListener("click", playerGuess, true)
     })
-    gameInfo.innerText = "Guess computers ships positions!"
+    gameInfo.innerText = "Guess computer's ship positions on the left board!"
 }
 }
 
@@ -327,9 +327,11 @@ function computerGuess(){
         },1000)
    
         //let player know its their turn
+        if(!gameOver){
         setTimeout(()=> {
             gameInfo.innerText = "Your turn!"
         }, 3000)
+        }
 
         // add event listener to computers board and player can guess again
              setTimeout(() => {
@@ -351,7 +353,7 @@ function checkHits(user, userHits, userSunkShips) {
     function checkShip(shipName, shipLength){
         if (userHits.filter(storedShipName =>
             storedShipName === shipName).length === shipLength){
-                gameInfo.innerText = `${shipName} was sunk!`
+                gameInfo.innerText = `${shipName[0].toUpperCase() + shipName.slice(1, shipName.length)} was sunk!`
                 if (user === "player"){
                     playerHits = userHits.filter(storedShipName => storedShipName !==shipName)
                 }
@@ -372,17 +374,23 @@ function checkHits(user, userHits, userSunkShips) {
 
     //loosing/winning logic
     if (computerSunkShips.length === 5){
-        gameInfo.innerText = "All of your ships were sunk! You lost!"
+        gameInfo.innerText = "All of your ships were sunk! You LOST!"
         gameOver = true
 
-        window.location.href = "./over.html"
+        setTimeout(()=> {
+          window.location.href = "./over.html"
+        }, 8000)
+
 
     }
     if (playerSunkShips.length === 5){
-        gameInfo.innerText = "All computer ships sunk! You are the winner!"
+        gameInfo.innerText = "All computer's ships sunk! You are the WINNER!"
         gameOver = true
 
-        window.location.href = "./over.html"
+
+        setTimeout(()=> {
+          window.location.href = "./over.html"
+        }, 8000)
 
     }
 
