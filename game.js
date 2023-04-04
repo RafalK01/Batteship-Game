@@ -179,7 +179,6 @@ const playerSunkShips = []
 // ships sunk by computer (of player)
 const computerSunkShips = []
 
-
 // player can click on computers board and guess where the ships are
 function playerGuess(event){
     if(!gameOver) {
@@ -217,10 +216,12 @@ function playerGuess(event){
 //------------------------------------------------------------------------------------------------------------------------------
  // decide on next move based on previously hit
 //strategic logic
-let hitInLastMove
 let guess
+let hitInLastMove
 let lastGuess
-console.log(lastGuess)
+let doubleSuccess
+
+console.log(guess)
 
 
 // creates an array of future guesses when one ship is hit
@@ -257,13 +258,20 @@ function nextStrategicMove(lastSuccesfullGuess){
 }
 
 function getStrategicGuess(lastGuessID){
-    console.log(lastGuessID)
+    
     nextStrategicStepsArray = nextStrategicMove(lastGuessID)
-    console.log(nextStrategicStepsArray)
-    return nextStrategicStepsArray[0]
-}
-//
+    let oneStrategicGuessPosition = Math.floor(Math.random() * nextStrategicStepsArray.length)
 
+    const allPlayersBlocks = document.querySelectorAll(".players-board div")
+    if (
+      !allPlayersBlocks[nextStrategicStepsArray[oneStrategicGuessPosition]].classList.contains("empty") &&
+      !allPlayersBlocks[nextStrategicStepsArray[oneStrategicGuessPosition]].classList.contains("hit")
+    ){ 
+    return nextStrategicStepsArray[oneStrategicGuessPosition]
+    } 
+    else {getStrategicGuess(lastGuessID)
+    }
+}
 
 //------------------------------------------------------------------------------------------------------------------------------
 // computer guesses players ship position
@@ -361,17 +369,25 @@ function checkHits(user, userHits, userSunkShips) {
     checkShip("submarine", 3)
     checkShip("destroyer", 2)
 
+
     //loosing/winning logic
     if (computerSunkShips.length === 5){
         gameInfo.innerText = "All of your ships were sunk! You lost!"
         gameOver = true
+
+        window.location.href = "./over.html"
+
     }
     if (playerSunkShips.length === 5){
         gameInfo.innerText = "All computer ships sunk! You are the winner!"
         gameOver = true
+
+        window.location.href = "./over.html"
+
     }
 
 }
+
 
 
 

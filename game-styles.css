@@ -4,10 +4,6 @@
 
   }
 
-
-
-
-
 body {
     display: flex;
     flex-direction: row;
@@ -18,8 +14,10 @@ body {
 
 /*central part of the game including name, individual boards, ship dock, flip button*/
 .main-board {
-    background-color: #44CFDB;
-    width: 1000px;
+    background-image: url(./Water.png);
+    background-size: cover;
+    background-position: center center;
+    width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
@@ -28,8 +26,19 @@ body {
 }
 
 .name {
-    font-size: 50px;
-    margin: 30px;
+    font-size: 80px;
+    margin: 20px 30px 5px 30px;
+    color: #4BC2FF;
+    -webkit-text-stroke: 2.5px black;
+    font-weight: 500;
+    
+}
+.game-info {
+    font-size: 40px;
+    color: white;
+    -webkit-text-stroke: 0.7px black;
+
+
 }
 
 .game-boards {
@@ -38,82 +47,70 @@ body {
 
 /* individual boards */
 .players-board, .computers-board {
-    background-color: #89DAE1;
+    background-color: #E5E4E2;
     width: 400px;
     height: 400px;
-    margin: 30px;
-    border: 1px solid black;
+    margin: 15px 40px;
     display: flex;
     flex-wrap: wrap;
+    border-radius: 4px;
+    
 }
 
 .players-board > div, .computers-board > div {
     width: var( --building-block-height);
     height: var( --building-block-height);
-    border: 1px solid lightslategray;
+    border: 0.5px solid lightslategray;
+    border-radius: 4px;
     box-sizing: border-box;
 }
-
 
 /* ship dock and ships */
 .ship-dock {
     background-color: #38595C;
-    width: 800px;
+    width: 1000px;
     height: 100px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items:center
+    align-items:center;
+    background: none;
+
 }
 
 .ship-dock > div {
     height: 40px;
-    /* background-color: gray; */
     margin: 5px;
+    border-radius: 4px;
 }
 
 .carrier {
     width: 240px; 
-    background-color: pink
+    background-color: #EBCB8B
 }
 
 .battleship {
     width: 200px;
-    background-color: yellow
+    background-color: #D08770
 
 }
 .cruiser {
     width: 180px;
-    background-color: orange
+    background-color:#BF616A
 
 }
 
 .submarine {
     width: 120px;
-    background-color: lightsalmon
+    background-color: #A3BE8C
 
 }
 
 .destroyer {
     width: 80px;
-    background-color: azure;
+    background-color: #B48EAD
 }
 
-
-
-
-
-
-
-
-
-
-
-.players-info, .computers-info{
-    background-color: aqua;
-    height: 100vh;
-    width: 220px;
-}
 
 /* .computers-board .carrier,
 .computers-board .battleship,
@@ -123,12 +120,38 @@ body {
     background-color: #89DAE1;
 } */
 
+.flip-button{
+    background-color: #1A4383;
+    color: white;
+    font-size: 20px;
+    padding: 10px 25px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 10px 30px;
+    border: none;
+    outline: none;
+}
 
-
+.start-button {
+    background-color: white;
+    color: #1A4383;
+    font-size: 20px;
+    padding: 10px 25px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 10px 30px;
+    border: none;
+    outline: none;
+}
 
 .hit {
     background-color: red !important;
 }
+
 .empty {
     background-color: gray !important;
 }

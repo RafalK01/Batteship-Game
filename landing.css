@@ -1,0 +1,21 @@
+body {
+	margin: 0;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	align-items: center;
+	width: 100vw;
+	height: 100vh;
+}
+
+.go-button {
+  background-color: #1A4383;
+  border: 3px solid black;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 25px;
+  cursor: pointer;
+  border-radius: 4px;
+}
