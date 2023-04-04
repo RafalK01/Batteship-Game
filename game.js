@@ -227,7 +227,7 @@ console.log(guess)
 // creates an array of future guesses when one ship is hit
 function nextStrategicMove(lastSuccesfullGuess){
     const allPlayersBlocks = document.querySelectorAll(".players-board div")
-    let nextStrategicSteps = []
+    let nextStrategicSteps = []    
 
     if( 
         !allPlayersBlocks[lastSuccesfullGuess + 1].classList.contains("empty") &&
@@ -257,21 +257,29 @@ function nextStrategicMove(lastSuccesfullGuess){
 
 }
 
+let arrayOfNextGuesses = []
+console.log(arrayOfNextGuesses)
+
 function getStrategicGuess(lastGuessID){
     
     nextStrategicStepsArray = nextStrategicMove(lastGuessID)
+    arrayOfNextGuesses.push(...nextStrategicStepsArray)
+    console.log(arrayOfNextGuesses)
+
     let oneStrategicGuessPosition = Math.floor(Math.random() * nextStrategicStepsArray.length)
 
     const allPlayersBlocks = document.querySelectorAll(".players-board div")
     if (
-      !allPlayersBlocks[nextStrategicStepsArray[oneStrategicGuessPosition]].classList.contains("empty") &&
-      !allPlayersBlocks[nextStrategicStepsArray[oneStrategicGuessPosition]].classList.contains("hit")
+      !allPlayersBlocks[arrayOfNextGuesses[oneStrategicGuessPosition]].classList.contains("empty") &&
+      !allPlayersBlocks[arrayOfNextGuesses[oneStrategicGuessPosition]].classList.contains("hit")
     ){ 
-    return nextStrategicStepsArray[oneStrategicGuessPosition]
+    return arrayOfNextGuesses[oneStrategicGuessPosition]
     } 
     else {getStrategicGuess(lastGuessID)
     }
 }
+
+//changed arrayOfNextGuesses from nextStrategicStepsArray
 
 //------------------------------------------------------------------------------------------------------------------------------
 // computer guesses players ship position
@@ -282,10 +290,29 @@ function computerGuess(){
 
             let guess
             if (hitInLastMove === false || lastGuess === undefined) {
+              if(arrayOfNextGuesses.length > 0){
+                guess = arrayOfNextGuesses[0]
+                arrayOfNextGuesses.shift()
+              }
+              else {
                 guess = Math.floor(Math.random() * 100)
+              }
             } 
             if (hitInLastMove === true && lastGuess !== undefined){
-                guess = getStrategicGuess(lastGuess)
+              getStrategicGuess(lastGuess)
+              if(arrayOfNextGuesses.length > 0){
+                guess = arrayOfNextGuesses[0]
+                //remove used element
+                arrayOfNextGuesses.shift()
+                // make sure there are no duplicates
+                arrayOfNextGuesses = [...new Set(arrayOfNextGuesses)];
+
+
+              }
+              else {
+                guess = Math.floor(Math.random() * 100)
+              }
+               // guess = getStrategicGuess(lastGuess)
             }
 
 
@@ -327,7 +354,7 @@ function computerGuess(){
         },1000)
    
         //let player know its their turn
-        if(!gameOver){
+        if(!gameOver) {
         setTimeout(()=> {
             gameInfo.innerText = "Your turn!"
         }, 3000)
@@ -336,7 +363,6 @@ function computerGuess(){
         // add event listener to computers board and player can guess again
              setTimeout(() => {
                  playersGo = true
-                 //gameInfo.innerText = "Your turn!"
                  const computersBoardBlocks = document.querySelectorAll(".computers-board div")
                  computersBoardBlocks.forEach(block => {
                  block.addEventListener("click", playerGuess, true)
