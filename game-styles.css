@@ -14,7 +14,7 @@ body {
 
 /*central part of the game including name, individual boards, ship dock, flip button*/
 .main-board {
-    background-image: url(./Water.png);
+    background-image: url(./water.png);
     background-size: cover;
     background-position: center center;
     width: 100vw;
@@ -28,17 +28,17 @@ body {
 .name {
     font-size: 80px;
     margin: 20px 30px 5px 30px;
-    color: #4BC2FF;
+    color: #8AFFFF;
     -webkit-text-stroke: 2.5px black;
     font-weight: 500;
     
 }
 .game-info {
     font-size: 40px;
-    color: white;
-    -webkit-text-stroke: 0.7px black;
-
-
+    color: #E5E4E2;
+    -webkit-text-stroke: 1.5px #1A4383;
+    height: 50px;
+    padding: 0;
 }
 
 .game-boards {
@@ -67,15 +67,14 @@ body {
 
 /* ship dock and ships */
 .ship-dock {
-    background-color: #38595C;
+    /* background-color: #38595C; */
     width: 1000px;
-    height: 100px;
+    height: 150px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items:center;
     background: none;
-
 }
 
 .ship-dock > div {
@@ -85,29 +84,29 @@ body {
 }
 
 .carrier {
-    width: 240px; 
+    width: 120px; 
     background-color: #EBCB8B
 }
 
 .battleship {
-    width: 200px;
+    width: 100px;
     background-color: #D08770
 
 }
 .cruiser {
-    width: 180px;
+    width: 90px;
     background-color:#BF616A
 
 }
 
 .submarine {
-    width: 120px;
+    width: 60px;
     background-color: #A3BE8C
 
 }
 
 .destroyer {
-    width: 80px;
+    width: 50px;
     background-color: #B48EAD
 }
 
@@ -120,6 +119,15 @@ body {
     background-color: #E5E4E2;
 }
 
+
+.game-buttons{
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .flip-button{
     background-color: #1A4383;
     color: white;
@@ -129,9 +137,13 @@ body {
     display: inline-block;
     cursor: pointer;
     border-radius: 4px;
-    margin: 10px 30px;
+    margin: 10px 30px 20px 30px;
     border: none;
     outline: none;
+}
+
+.hidden {
+    visibility: hidden;
 }
 
 .start-button {
@@ -143,7 +155,7 @@ body {
     display: inline-block;
     cursor: pointer;
     border-radius: 4px;
-    margin: 10px 30px;
+    margin: 10px 30px 20px 30px;
     border: none;
     outline: none;
 }

@@ -33,7 +33,7 @@ function draw() {
   }
   stroke("black")
   strokeWeight(7)
-  fill("#4BC2FF") //("#317EF7") //("#DBA01F")  //("#FFE577");
+  fill("#4BC2FF")
   textSize(100);
   textAlign(CENTER, CENTER);
   text("THE BATTLESHIP GAME", width / 2, height / 2 -100);

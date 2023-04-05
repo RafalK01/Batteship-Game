@@ -9,7 +9,6 @@ function setup() {
   createCanvas(w, h);
   cols = w / scl;
   rows = h / scl;
-
 }
 
 function draw() {
@@ -38,9 +37,10 @@ function draw() {
   textAlign(CENTER, CENTER);
   text("GAME OVER", width / 2, height / 2 -100);
 
+
   button = createButton("Play again");
   button.class("play-again-button")
-  button.position(width / 2 -100, 500)
+  button.position(width / 2 -100, 400)
   button.mousePressed(playAgain);
   
 }

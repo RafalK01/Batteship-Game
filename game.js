@@ -143,6 +143,13 @@ function droppShip(event){
       shipsPlacedByPlayer.push(draggedPlayersShip)
       draggedPlayersShip.remove()
 
+      if(shipsPlacedByPlayer.length === 5){
+        flipButton.classList.add("hidden")
+        startButton.style.marginRight = "16vw"
+        startButton.style.marginTop = "20px"
+        dock.style.height = "0px"
+        }
+
     }
   }
 
@@ -156,6 +163,7 @@ function droppShip(event){
  // start button event listener
 const startButton = document.querySelector(".start-button")
 startButton.addEventListener("click", click => startGame())
+
  
 //start the game if users ships are placed
 function startGame(){
@@ -208,7 +216,7 @@ function playerGuess(event){
         setTimeout(()=>{
             gameInfo.innerText = "It's computers go!"
             computerGuess()
-        },1000)
+        },2000)
     }
     }
     
@@ -351,13 +359,13 @@ function computerGuess(){
                 hitInLastMove = false
                   
             }
-        },1000)
+        },2000)
    
         //let player know its their turn
         if(!gameOver) {
         setTimeout(()=> {
             gameInfo.innerText = "Your turn!"
-        }, 3000)
+        }, 5000)
         }
 
         // add event listener to computers board and player can guess again
@@ -366,7 +374,7 @@ function computerGuess(){
                  const computersBoardBlocks = document.querySelectorAll(".computers-board div")
                  computersBoardBlocks.forEach(block => {
                  block.addEventListener("click", playerGuess, true)
-                 })
+                 },2000)
         })
         
     }
