@@ -1,20 +1,21 @@
 /* FINISH PAGE */
 body {
-    margin: 0;
+  margin: 0;
 	width: 100vw;
 	height: 100vh;
-    display: flex;
+  display: flex;
 	justify-content: center;
 	align-content: center;
 	align-items: center;
 }
+
 .finish-page {
     background-image: url(./Water.png);
-      background-size: cover;
-      background-position: center center;
-      width: 100vw;
-      height: 100vh;
-      justify-content: center;
+    background-size: cover;
+    background-position: center center;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
 	  align-content: center;
 	  align-items: center; 
 

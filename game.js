@@ -1,4 +1,4 @@
-//my consts
+//main consts
 const playersBoard = document.querySelector(".players-board")
 const computersBoard = document.querySelector(".computers-board")
 const flipButton = document.querySelector(".flip-button")
@@ -39,6 +39,8 @@ const destroyer = new Ship("destroyer", 2)
 const shipsArray = [carrier, battleship, cruiser, submarine, destroyer]
 let notPlaced
 
+
+//get valid position of a ship
 function getValidity(boardBlocks, isHorizontal, startIndex, ship) {
 
     let goodStartIndex;
@@ -60,7 +62,6 @@ function getValidity(boardBlocks, isHorizontal, startIndex, ship) {
       }
     }
 
-  
     // prevent overflowing of ships  
     let noOverflow = true;
     if (isHorizontal) {
@@ -81,9 +82,8 @@ function getValidity(boardBlocks, isHorizontal, startIndex, ship) {
     return {shipBlocks, noOverflow, notBusy}
 }
 
-// is it players turn
+// is it players turn?
 let playersGo 
-
 
 // COPMUTER PLACE SHIPS RANDOMLY / PLAYER DROPS SHIPS
 function placeShip(user, ship, startId) {
@@ -153,18 +153,13 @@ function droppShip(event){
     }
   }
 
-
-
 //LOGIC
   let gameOver = false
  
-
-
  // start button event listener
 const startButton = document.querySelector(".start-button")
 startButton.addEventListener("click", click => startGame())
 
- 
 //start the game if users ships are placed
 function startGame(){
     if(shipsPlacedByPlayer.length !== 5){
@@ -221,16 +216,11 @@ function playerGuess(event){
     }
     
 }
-//------------------------------------------------------------------------------------------------------------------------------
- // decide on next move based on previously hit
-//strategic logic
+
+ // computer decide on next move based on previously hit - strategic logic
 let guess
 let hitInLastMove
 let lastGuess
-let doubleSuccess
-
-console.log(guess)
-
 
 // creates an array of future guesses when one ship is hit
 function nextStrategicMove(lastSuccesfullGuess){
@@ -265,6 +255,7 @@ function nextStrategicMove(lastSuccesfullGuess){
 
 }
 
+//create partn of steps after each successful move
 let arrayOfNextGuesses = []
 console.log(arrayOfNextGuesses)
 
@@ -287,13 +278,9 @@ function getStrategicGuess(lastGuessID){
     }
 }
 
-//changed arrayOfNextGuesses from nextStrategicStepsArray
-
-//------------------------------------------------------------------------------------------------------------------------------
 // computer guesses players ship position
 function computerGuess(){
     if(!gameOver){
-    
         setTimeout(()=> {
 
             let guess
@@ -314,15 +301,12 @@ function computerGuess(){
                 arrayOfNextGuesses.shift()
                 // make sure there are no duplicates
                 arrayOfNextGuesses = [...new Set(arrayOfNextGuesses)];
-
-
               }
               else {
                 guess = Math.floor(Math.random() * 100)
               }
                // guess = getStrategicGuess(lastGuess)
             }
-
 
             const allPlayersBlocks = document.querySelectorAll(".players-board div")
             if (allPlayersBlocks[guess].classList.contains("empty") ||
@@ -345,7 +329,6 @@ function computerGuess(){
                 hitInLastMove = true
                 lastGuess = guess
 
-
                 //check score
                 checkHits("computer", computerHits, computerSunkShips)
 
@@ -356,8 +339,7 @@ function computerGuess(){
                 allPlayersBlocks[guess].classList.add("empty")
 
                 //strategic logic
-                hitInLastMove = false
-                  
+                hitInLastMove = false   
             }
         },2000)
    
@@ -405,7 +387,6 @@ function checkHits(user, userHits, userSunkShips) {
     checkShip("submarine", 3)
     checkShip("destroyer", 2)
 
-
     //loosing/winning logic
     if (computerSunkShips.length === 5){
         gameInfo.innerText = "All of your ships were sunk! You LOST!"
@@ -414,20 +395,15 @@ function checkHits(user, userHits, userSunkShips) {
         setTimeout(()=> {
           window.location.href = "./over.html"
         }, 8000)
-
-
     }
     if (playerSunkShips.length === 5){
         gameInfo.innerText = "All computer's ships sunk! You are the WINNER!"
         gameOver = true
 
-
         setTimeout(()=> {
           window.location.href = "./over.html"
         }, 8000)
-
     }
-
 }
 
 
