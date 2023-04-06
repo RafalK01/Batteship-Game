@@ -10,14 +10,17 @@ body {
 }
 
 .finish-page {
-    background-image: url(./Water.png);
-    background-size: cover;
-    background-position: center center;
-    width: 100vw;
-    height: 100vh;
-    justify-content: center;
-	  align-content: center;
-	  align-items: center; 
+  background-image: url(./Water.png);
+  background-size: cover;
+  background-position: center center;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
 
   }
 
@@ -31,4 +34,6 @@ body {
     font-size: 25px;
     cursor: pointer;
     border-radius: 4px;
+    position: absolute;
+    margin-top: 300px
   }
