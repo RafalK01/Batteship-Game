@@ -12,9 +12,7 @@ function setup() {
 
   button = createButton("Let's go!");
   button.class("go-button")
-  // button.position(width / 2 -100, 500)
   button.mousePressed(goToNextPage);
-
 }
 
 function draw() {
@@ -46,13 +44,7 @@ function draw() {
   fill("#8AFFFF");
   textSize(60);
   textAlign(CENTER, CENTER);
-  text("Make' em sink!!", width / 2, height / 2);
-
-  // button = createButton("Let's go!");
-  // button.class("go-button")
-  // // button.position(width / 2 -100, 500)
-  // button.mousePressed(goToNextPage);
-  
+  text("Make' em sink!!", width / 2, height / 2); 
 }
 
 function goToNextPage() {

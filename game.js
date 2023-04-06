@@ -394,7 +394,7 @@ function checkHits(user, userHits, userSunkShips) {
 
         setTimeout(()=> {
           window.location.href = "./over.html"
-        }, 8000)
+        }, 6000)
     }
     if (playerSunkShips.length === 5){
         gameInfo.innerText = "All computer's ships sunk! You are the WINNER!"
@@ -402,7 +402,7 @@ function checkHits(user, userHits, userSunkShips) {
 
         setTimeout(()=> {
           window.location.href = "./over.html"
-        }, 8000)
+        }, 6000)
     }
 }
 
