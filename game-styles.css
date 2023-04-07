@@ -105,13 +105,13 @@ body {
 }
 
 
-/* .computers-board .carrier,
+.computers-board .carrier,
 .computers-board .battleship,
 .computers-board .cruiser,
 .computers-board .submarine,
 .computers-board .destroyer { 
     background-color: #E5E4E2;
-} */
+}
 
 
 .game-buttons{
