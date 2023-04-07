@@ -188,7 +188,7 @@ function playerGuess(event){
         //hit is successful
         if(event.target.classList.contains("busy")){
             event.target.classList.add("hit")
-            gameInfo.innerText = "You hit computers ship!"
+            gameInfo.innerText = "You hit computer's ship!"
             let hitShipsClasses = Array.from(event.target.classList)
             hitShipsClasses = hitShipsClasses.filter(className => className !== "busy")
             hitShipsClasses = hitShipsClasses.filter(className => className !== "hit")
@@ -209,7 +209,7 @@ function playerGuess(event){
         const computersBoardBlocks = document.querySelectorAll(".computers-board div")
         computersBoardBlocks.forEach(block => block.removeEventListener("click", playerGuess, true))
         setTimeout(()=>{
-            gameInfo.innerText = "It's computers go!"
+            gameInfo.innerText = "It's computer's go!"
             computerGuess()
         },2000)
     }
